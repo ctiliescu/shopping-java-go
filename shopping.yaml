@@ -6,7 +6,7 @@ host: localhost:7009
 schemes:
   - http
 paths:
-  /users/login:
+  /api/v1/users/login:
     post:
       tags:
         - "auth"
@@ -31,7 +31,7 @@ paths:
             $ref: "#/definitions/Token"
         "401":
           description: "The user is Unauthorized"
-  /users/logout:
+  /api/v1/users/logout:
     get:
       tags:
         - "auth"
@@ -45,12 +45,13 @@ paths:
           description: "The used was successfully logged out"
         "401":
           description: "The user is Unauthorized"
-  /carts/add:
+  /api/v1/carts/add:
     post:
       tags:
-        - "cart"
+        - "carts"
       summary: "Added products in cart"
       description: "Added products in cart"
+      operationId: "addToCarts"
       consumes:
       - "application/json"
       produces:
@@ -71,12 +72,13 @@ paths:
           description: "The user is Unauthorized" 
         "404":
           description: "The stock is not enought"
-  /carts/checkout:
+  /api/v1/carts/checkout:
     get:
       tags:
-        - "cart"
+        - "carts"
       summary: "Finish the shopping and checkout cart"
       description: "Finish the shopping and checkout cart"
+      operationId: "order"
       consumes:
       - "application/json"
       produces:
