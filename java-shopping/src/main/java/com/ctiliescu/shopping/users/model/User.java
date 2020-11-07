@@ -1,4 +1,4 @@
-package com.ctiliescu.shopping.users;
+package com.ctiliescu.shopping.users.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

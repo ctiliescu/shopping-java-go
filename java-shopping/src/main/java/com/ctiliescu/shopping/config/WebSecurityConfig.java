@@ -15,9 +15,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         JWTAuthenticationFilter filter = new JWTAuthenticationFilter();
 
-        httpSecurity.
-                antMatcher("/api/v1/**").
-                addFilter(filter).authorizeRequests().anyRequest().authenticated().and();
+        httpSecurity.csrf().disable().cors().disable().
+                addFilterBefore(filter, JWTAuthenticationFilter.class).requestMatchers().antMatchers("/api/v1/**").and().authorizeRequests().anyRequest().authenticated();
     }
 
     @Override

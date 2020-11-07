@@ -21,7 +21,7 @@ public class JWTAuthenticationFilter extends AbstractPreAuthenticatedProcessingF
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         LOG.info("Logging Request  {} : {}", req.getMethod(), req.getRequestURI());
-        Authentication authentication = new PreAuthenticatedAuthenticationToken(null, null, null);
+        Authentication authentication = new PreAuthenticatedAuthenticationToken(1, null, null);
         successfulAuthentication((HttpServletRequest) request, (HttpServletResponse) response, authentication);
         chain.doFilter(request, response);
         LOG.info("Logging Response :{}", res.getContentType());
