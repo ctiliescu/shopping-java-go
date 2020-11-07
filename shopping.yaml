@@ -66,12 +66,8 @@ paths:
       responses:
         "200":
           description: "The used was successfully logged in"
-          schema:
-            $ref: "#/definitions/Token"
         "401":
           description: "The user is Unauthorized" 
-        "404":
-          description: "The stock is not enought"
   /api/v1/carts/checkout:
     get:
       tags:
@@ -83,21 +79,12 @@ paths:
       - "application/json"
       produces:
       - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Cart Element object added into cart"
-        required: true
-        schema:
-          $ref: "#/definitions/CartElement"
       responses:
         "200":
           description: "The used was successfully logged in"
-          schema:
-            $ref: "#/definitions/Token"
         "401":
           description: "The user is Unauthorized" 
-        "404":
+        "400":
           description: "The stock is not enought"      
 definitions:
   UserCredentials:
@@ -124,6 +111,6 @@ definitions:
       - quantity
     properties:
       product_id:
-        type: string
+        type: integer
       quantity:
-        type: string
+        type: integer
