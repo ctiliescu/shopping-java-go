@@ -11,6 +11,8 @@ import com.ctiliescu.shopping.users.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,6 +39,9 @@ public class UsersDelegateImpl implements AuthApiDelegate {
 
     @Override
     public ResponseEntity<Void> logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String jwtLogin = (String) authentication.getCredentials();
+        authService.logout(jwtLogin);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -1,7 +1,8 @@
 package com.ctiliescu.shopping.carts;
 
 import com.ctiliescu.shopping.api.CartsApiDelegate;
-import com.ctiliescu.shopping.carts.model.CartsService;
+import com.ctiliescu.shopping.carts.service.CartsService;
+import com.ctiliescu.shopping.carts.service.PaymentService;
 import com.ctiliescu.shopping.model.CartElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,9 @@ public class CartsDelegateImpl implements CartsApiDelegate {
     @Autowired
     private CartsService cartsService;
 
+    @Autowired
+    private PaymentService paymentService;
+
     public ResponseEntity<Void> addToCarts(CartElement body) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         cartsService.addInCart(body, (int) authentication.getPrincipal());
@@ -23,13 +27,17 @@ public class CartsDelegateImpl implements CartsApiDelegate {
 
     public ResponseEntity<Void> order() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Boolean response = cartsService.order((int) authentication.getPrincipal());
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        int userId = (int) authentication.getPrincipal();
+        Boolean response = cartsService.order(userId);
+
+        if (response) {
+            if(paymentService.checkPayment()) {
+                cartsService.finishOrder(userId);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                cartsService.revertOrder(userId);
+            }
         }
-        if (response) return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
