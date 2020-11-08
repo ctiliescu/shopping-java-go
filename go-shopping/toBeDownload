@@ -1,0 +1,2 @@
+go get -v -u github.com/dgrijalva/jwt-go
+go get -v -u github.com/hashicorp/go-memdb
