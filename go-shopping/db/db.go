@@ -3,7 +3,6 @@ package db
 import (
     "fmt"
 	"github.com/hashicorp/go-memdb"
-    "log"
 )
 
 var dataBase *memdb.MemDB
@@ -115,14 +114,10 @@ func Order(order map[int]int) (bool) {
 
 	for k, v := range order {
 		raw, _ := txn.First("product", "id", k)
-			log.Println(raw)
 		if (raw != nil &&  raw.(*Product).Stock >= v) {
 			product := raw.(*Product) 
 			product.Stock = product.Stock - v
-			log.Println(product)
 			if err := txn.Insert("product", product); err != nil {
-
-			log.Println(err)
 				txn.Abort()
 				return false;	
 			}

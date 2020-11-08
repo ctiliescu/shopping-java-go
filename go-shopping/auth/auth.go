@@ -6,7 +6,6 @@ import (
     "encoding/json"
     "github.com/dgrijalva/jwt-go"
     "net/http"
-    "log"
     "math/rand"
 	db "../db"
 )
@@ -71,7 +70,6 @@ func GenerateToken(r *http.Request) (string, error) {
 		return "", err
 	}
 
-	log.Println(creds)
 	id, errLogin := db.LoginUser(creds.Username, creds.Password)
 	if errLogin != nil {
 		return "", errLogin
@@ -100,6 +98,10 @@ func Authorized(r *http.Request) (int, string, error) {
 		return jwtKey, nil
 	})
 
+	if(claims["jwtId"] == nil) {
+		return -1, "", fmt.Errorf("Invalidat Authorized header")
+	}
+
 	jwtId := claims["jwtId"].(string)
 
 	if blackList[jwtId] {
@@ -110,7 +112,6 @@ func Authorized(r *http.Request) (int, string, error) {
 		return -1, jwtId, err
 	} else {
 		userId := int(claims["userId"].(float64))
-		log.Println(userId)
 		return userId, jwtId, nil
 	}
 }

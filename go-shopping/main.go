@@ -13,7 +13,7 @@ func main() {
     http.HandleFunc("/api/v1/users/login", auth.LoginHandler)
     http.HandleFunc("/api/v1/users/logout", auth.LogoutHandle)
     http.HandleFunc("/api/v1/carts/add", cart.AddHandle)
-    http.HandleFunc("/api/v1/carts/order", cart.OrderHandle)
+    http.HandleFunc("/api/v1/carts/checkout", cart.OrderHandle)
     http.ListenAndServe(":7010", nil)
 
 }
