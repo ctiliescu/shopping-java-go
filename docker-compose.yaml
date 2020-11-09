@@ -1,0 +1,27 @@
+version: '3.2'
+services:
+  java-shopping:
+    build: java-shopping/.
+    image: java-shopping
+    ports:
+      - "7009:7009"
+    networks:
+      - intern
+  go-shopping:
+    build: go-shopping/.
+    image: go-shopping
+    ports:
+      - "7010:7010"
+    networks:
+      - intern
+  swagger-shopping:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-shopping
+    ports:
+      - "7008:8080"
+    volumes:
+      - ./java-shopping/api:/usr/share/nginx/html/swagger
+    environment:
+      API_URL: swagger/shopping.yaml
+networks:
+  intern:
